@@ -4,6 +4,7 @@
       :teamName="agentProfile.teamName"
       :imageUrl="agentProfile.imageUrl"
       :onClose="onClose"
+      :userType="agentProfile.userType"
     />
     <MessageList
       :messages="messageList"
@@ -52,6 +53,9 @@ export default {
     'isOpen': {
       type: Boolean,
       default: () => false
+    },
+    'userType': {
+      type: String
     }
   },
   data () {

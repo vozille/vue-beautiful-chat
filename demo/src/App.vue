@@ -11,8 +11,6 @@
       :open="openChat"
       :showEmoji="true"
       :showFile="true" />
-    <TestArea :onMessage="handleMessageFromTextArea" />
-
   </div>
 </template>
 
@@ -24,39 +22,71 @@ import messageHistory from './messageHistory'
 
 export default {
   name: 'app',
-  created: function(){
+  created: function() {
+    this.handleTextField(console.log);
   },
   data() {
     return {
       agentProfile: {
-        teamName: 'Vue Beautiful Chat',
-        imageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png'
+        teamName: 'Support',
+        imageUrl:
+          'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png',
+        userType: "agent"
       },
       messageList: messageHistory,
       newMessagesCount: 0,
       isChatOpen: false,
+      handleMsgCallback: null
     }
   },
   methods: {
-    handleMessageFromTextArea (text) {
-      if (text.length > 0) {
-        this.newMessagesCount = this.isChatOpen ? this.newMessagesCount : this.newMessagesCount + 1
-        this.messageList.push({author: 'them', type: 'text', data: { text }})
+    setUserType: function(type){
+      if(type)
+        this.agentProfile.userType = type
+    },
+    setUserName(name) {
+      if (name != undefined) {
+        this.agentProfile.teamName = name
       }
     },
-    onMessageWasSent (msg) {
-      this.messageList.push(msg)
-      window.customFunction("execute prayash function " + JSON.stringify(msg))
+    handleMessageFromTextArea(text) {
+      if (text.length > 0) {
+        this.newMessagesCount = this.isChatOpen
+          ? this.newMessagesCount
+          : this.newMessagesCount + 1
+        this.messageList.push({ author: 'them', type: 'text', data: { text } })
+      }
     },
-    onMessageWasReceivedByServer (msg){
+    onMessageWasSent(msg) {
       this.messageList.push(msg)
+      if(this.handleMsgCallback)
+        this.handleMsgCallback(msg.data.text)
     },
-    openChat () {
+    handleTextField(callback) {
+      if(callback)
+        this.handleMsgCallback = callback
+    },
+    receiveMessage(msg) {
+      if (msg != undefined) {
+        this.messageList.push({
+          type: 'text',
+          author: 'them',
+          data: {
+            text: msg,
+            meta: null
+          }
+        })
+      }
+    },
+    openChat() {
       this.isChatOpen = true
       this.newMessagesCount = 0
     },
-    closeChat () {
+    closeChat() {
       this.isChatOpen = false
+    },
+    initialiseValues() {
+      window.customFunction = console.log
     }
   }
 }
@@ -69,7 +99,7 @@ body {
 }
 
 * {
-  font-family: Avenir Next, Helvetica Neue, Helvetica,sans-serif;
+  font-family: Avenir Next, Helvetica Neue, Helvetica, sans-serif;
 }
 
 .demo-description {
@@ -91,7 +121,7 @@ body {
   margin: 0px;
   padding: 0px;
   resize: none;
-  font-family: Avenir Next, Helvetica Neue, Helvetica,sans-serif;
+  font-family: Avenir Next, Helvetica Neue, Helvetica, sans-serif;
   background: #fafbfc;
   color: #8da2b5;
   border: 1px solid #dde5ed;

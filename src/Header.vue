@@ -1,5 +1,5 @@
 <template>
-  <div class="sc-header">
+  <div class="sc-header" :class="{user: userType === 'user', agent: userType !== 'user'}">
     <img class="sc-header--img" :src="imageUrl" alt="" />
     <div class="sc-header--team-name"> {{teamName}} </div>
     <div class="sc-header--close-button" @click="onClose">
@@ -20,13 +20,16 @@ export default {
     onClose: {
       type: Function,
       required: true
+    },
+    userType: {
+      type: String
     }
   }
 }
 </script>
 <style scoped>
-.sc-header {
-  background: #4e8cff;
+
+.sc-header{
   min-height: 75px;
   border-top-left-radius: 9px;
   border-top-right-radius: 9px;
@@ -36,6 +39,14 @@ export default {
   position: relative;
   box-sizing: border-box;
   display: flex;
+}
+
+.sc-header.user {
+  background: #4e8cff;
+}
+
+.sc-header.agent {
+  background: #437337;
 }
 
 .sc-header--img {
