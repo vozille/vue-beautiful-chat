@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Header />
     <beautiful-chat
+      ref="chatbotVueComponent"
       :agentProfile="agentProfile"
       :onMessageWasSent="onMessageWasSent"
       :messageList="messageList"
@@ -11,22 +11,20 @@
       :open="openChat"
       :showEmoji="true"
       :showFile="true" />
-      <p class="text-center"><a href="#" @click.prevent="openChat()">Open the chat window</a></p>
     <TestArea :onMessage="handleMessageFromTextArea" />
-    <Footer />
+
   </div>
 </template>
 
 <script>
 import messageHistory from './messageHistory'
-import Header from './Header.vue'
-import Footer from './Footer.vue'
-import TestArea from './TestArea.vue'
+// import Header from './Header.vue'
+// import Footer from './Footer.vue'
+// import TestArea from './TestArea.vue'
 
 export default {
   name: 'app',
-  components: {
-    Header, Footer, TestArea
+  created: function(){
   },
   data() {
     return {
@@ -36,7 +34,7 @@ export default {
       },
       messageList: messageHistory,
       newMessagesCount: 0,
-      isChatOpen: false
+      isChatOpen: false,
     }
   },
   methods: {
@@ -47,6 +45,10 @@ export default {
       }
     },
     onMessageWasSent (msg) {
+      this.messageList.push(msg)
+      window.customFunction("execute prayash function " + JSON.stringify(msg))
+    },
+    onMessageWasReceivedByServer (msg){
       this.messageList.push(msg)
     },
     openChat () {
