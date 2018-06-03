@@ -4,6 +4,7 @@
       class="sc-user-input--file-icon-wrapper"
       type='button'
     >
+      <!-- <img src='https://cdn.pbrd.co/images/Ho40wXE.png'> -->
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"

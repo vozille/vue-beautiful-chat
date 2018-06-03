@@ -9,21 +9,23 @@
       :isOpen="isChatOpen"
       :close="closeChat"
       :open="openChat"
-      :showEmoji="true"
-      :showFile="true" />
+      :showEmoji="false"
+      :showFile="false"
+      :showAudio="true"
+      :showSendButton="true"
+      :mircrophoneStatus="mircrophoneStatus" />
   </div>
 </template>
 
 <script>
 import messageHistory from './messageHistory'
-// import Header from './Header.vue'
-// import Footer from './Footer.vue'
-// import TestArea from './TestArea.vue'
 
 export default {
   name: 'app',
   created: function() {
-    this.handleTextField(console.log);
+    this.handleTextField(console.log)
+    this.mircrophoneStatus = {}
+    this.mircrophoneStatus.isCallSessionOngoing = false
   },
   data() {
     return {
@@ -31,12 +33,15 @@ export default {
         teamName: 'Support',
         imageUrl:
           'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png',
-        userType: "agent"
+        userType: "user"
       },
       messageList: messageHistory,
       newMessagesCount: 0,
       isChatOpen: false,
-      handleMsgCallback: null
+      handleMsgCallback: null,
+      mircrophoneStatus: {
+        isCallSessionOngoing: false
+      }
     }
   },
   methods: {
@@ -48,6 +53,9 @@ export default {
       if (name != undefined) {
         this.agentProfile.teamName = name
       }
+    },
+    setMicrophoneStatus (data){
+      this.mircrophoneStatus = data
     },
     handleMessageFromTextArea(text) {
       if (text.length > 0) {
@@ -76,6 +84,9 @@ export default {
             meta: null
           }
         })
+      }
+      if(!this.isChatOpen){
+        this.newMessagesCount += 1
       }
     },
     openChat() {

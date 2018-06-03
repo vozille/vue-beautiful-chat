@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="sc-launcher" :class="{opened: isOpen}" @click.prevent="isOpen ? close() : open()">
+    <div class="sc-launcher" :class="{opened: isOpen, user: agentProfile.userType === 'user', agent: agentProfile.userType !== 'user'}" @click.prevent="isOpen ? close() : open()">
       <div v-if="newMessagesCount > 0 && !isOpen" class="sc-new-messsages-count">
         {{newMessagesCount}}
       </div>
@@ -15,6 +15,9 @@
       :onClose="close"
       :showEmoji="showEmoji"
       :showFile="showFile"
+      :showAudio="showAudio"
+      :showSendButton="showSendButton"
+      :mircrophoneStatus="mircrophoneStatus"
     />
   </div>
 </template>
@@ -24,6 +27,14 @@ import ChatWindow from './ChatWindow.vue'
 export default {
   props: {
     showEmoji: {
+      type: Boolean,
+      default: false
+    },
+    showAudio: {
+      type: Boolean,
+      default: false
+    },
+    showSendButton: {
       type: Boolean,
       default: false
     },
@@ -44,6 +55,10 @@ export default {
       default: false
     },
     agentProfile: {
+      type: Object,
+      required: true
+    },
+    mircrophoneStatus: {
       type: Object,
       required: true
     },
@@ -126,6 +141,14 @@ export default {
 .sc-launcher.opened .sc-closed-icon {
   transform: rotate(-90deg);
   opacity: 0;
+}
+
+.sc-launcher.user {
+  background-color: #4e8cff;
+}
+
+.sc-launcher.agent {
+  background-color: #437337;
 }
 
 .sc-launcher.opened:before {

@@ -10,7 +10,7 @@
       :messages="messageList"
       :imageUrl="agentProfile.imageUrl"
     />
-    <UserInput :showEmoji="showEmoji" :onSubmit="onUserInputSubmit" :showFile="showFile" />
+    <UserInput :showEmoji="showEmoji" :onSubmit="onUserInputSubmit" :showFile="showFile" :mircrophoneStatus="mircrophoneStatus" />
   </div>
 </template>
 
@@ -56,6 +56,9 @@ export default {
     },
     'userType': {
       type: String
+    },
+    'mircrophoneStatus': {
+      type: Object
     }
   },
   data () {

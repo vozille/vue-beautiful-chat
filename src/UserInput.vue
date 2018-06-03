@@ -27,6 +27,9 @@
           <FileIcons :onChange="_handleFileSubmit" />
         </div>
         <div class="sc-user-input--button">
+          <VoiceIcon :click="_handleVoiceCall" :mircrophoneStatus="mircrophoneStatus" />
+        </div>
+        <div class="sc-user-input--button">
           <SendIcon :onClick="_submitText" />
         </div>
       </div>
@@ -39,12 +42,14 @@
 import EmojiIcon from './EmojiIcon.vue'
 import FileIcons from './FileIcons.vue'
 import SendIcon from './SendIcon.vue'
+import VoiceIcon from './VoiceIcon.vue'
 
 export default {
   components: {
     EmojiIcon,
     FileIcons,
-    SendIcon
+    SendIcon,
+    VoiceIcon
   },
   props: {
     showEmoji: {
@@ -57,6 +62,10 @@ export default {
     },
     onSubmit: {
       type: Function,
+      required: true
+    },
+    mircrophoneStatus: {
+      type: Object,
       required: true
     }
   },
@@ -119,6 +128,9 @@ export default {
     },
     _handleFileSubmit (file) {
       this.file = file
+    },
+    _handleVoiceCall (){
+      this.mircrophoneStatus.isCallSessionOngoing = !this.mircrophoneStatus.isCallSessionOngoing
     }
   }
 }
